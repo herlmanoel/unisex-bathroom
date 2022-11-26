@@ -1,15 +1,30 @@
 package entities;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Bathroom {
-    private Set<Person> people;
+    private List<Person> people;
     private int maximumCapacity;
     private Sex sex;
 
+    private int interval = 2000;
+
+    public synchronized void leave() {
+        int DELAY = 500;
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                getPeople().remove(getPeople().get(0));
+            }
+        }, DELAY, interval);
+    }
+
+
     public Bathroom() {}
 
-    public Set<Person> getPeople() {
+    public List<Person> getPeople() {
         return people;
     }
 
@@ -70,7 +85,7 @@ public class Bathroom {
         this.maximumCapacity = maximumCapacity;
     }
 
-    public void setPeople(Set<Person> people) {
+    public void setPeople(List<Person> people) {
         this.people = people;
     }
 
