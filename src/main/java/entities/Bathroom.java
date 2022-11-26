@@ -25,6 +25,7 @@ public class Bathroom {
             setSex(person.getSex());
         }
         this.setPerson(person);
+        notify();
     }
 
     private void waitIfExceededMaximumCapacity() {
