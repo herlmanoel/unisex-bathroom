@@ -17,16 +17,41 @@ public class Bathroom {
         this.people.add(person);
     }
 
-    public void addPerson(Person person) {
-        if(isExceededMaximumCapacity()) {
-            return;
-        }
+    public synchronized void tryEnter(Person person) {
+        waitIfExceededMaximumCapacity();
+        waitIfSexNotMatch(person);
+
         if(bathroomIsEmpty()) {
             setSex(person.getSex());
         }
         this.setPerson(person);
     }
 
+    private void waitIfExceededMaximumCapacity() {
+        while (isExceededMaximumCapacity()) {
+            System.out.println("Bathroom is full.");
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void waitIfSexNotMatch(Person person) {
+        while (!isSexEquals(person.getSex())) {
+            System.out.println("Bathroom is sex opposite.");
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean isSexEquals(Sex sex) {
+        return this.sex == sex;
+    }
 
     private boolean isExceededMaximumCapacity() {
         return this.getPeople().size() > maximumCapacity;
