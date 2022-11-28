@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class Bathroom {
     private List<Person> people;
@@ -8,6 +9,7 @@ public class Bathroom {
     private Sex sex;
 
     public Bathroom() {
+        people = new ArrayList<Person>();
     }
 
     public List<Person> getPeople() {
@@ -19,7 +21,7 @@ public class Bathroom {
     }
 
     public boolean isSexEquals(Sex sex) {
-        return this.sex == sex;
+        return this.getPeople().size() == 0 || this.sex == sex;
     }
 
     public boolean isExceededMaximumCapacity() {

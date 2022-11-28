@@ -1,35 +1,31 @@
 package entities;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class PersonBathroom {
     Bathroom bathroom;
     Person person;
 
-    private int interval = 2000;
-
-    public synchronized void leave() {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                bathroom.getPeople().remove(bathroom.getPeople().get(0));
-            }
-        }, getRandomDelay(200, 2000), interval);
+    public PersonBathroom(Bathroom bathroom) {
+        this.bathroom = bathroom;
+        this.person = new Person();
     }
 
     private int getRandomDelay(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public void use(int min, int max) {
+    public void use() {
         tryEnter();
-        leave();
+        try {
+            Thread.sleep(getRandomDelay(1000, 4000));
+            bathroom.getPeople().remove(person);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private synchronized void tryEnter() {
         waitIfExceededMaximumCapacity();
-        waitIfSexNotMatch(person);
+        waitIfSexNotMatch();
 
         if (bathroom.bathroomIsEmpty()) {
             bathroom.setSex(person.getSex());
@@ -49,7 +45,7 @@ public class PersonBathroom {
         }
     }
 
-    private void waitIfSexNotMatch(Person person) {
+    private void waitIfSexNotMatch() {
         while (!bathroom.isSexEquals(person.getSex())) {
             System.out.println("Bathroom is sex opposite.");
             try {

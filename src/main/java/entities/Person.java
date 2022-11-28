@@ -7,6 +7,7 @@ public class Person {
     private Sex sex;
 
     public Person() {
+        sex = Sex.randomSex();
     }
 
     public Person(int id, Sex sex) {
