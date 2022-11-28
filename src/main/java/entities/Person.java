@@ -6,7 +6,8 @@ public class Person {
     private int id;
     private Sex sex;
 
-    public Person() {}
+    public Person() {
+    }
 
     public Person(int id, Sex sex) {
         this.id = id;
@@ -31,8 +32,10 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Person)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Person))
+            return false;
         Person person = (Person) o;
         return getId() == person.getId() && sex == person.sex;
     }
