@@ -1,10 +1,11 @@
 package entities;
 
-public class PersonBathroom {
+public class PersonBathroom extends Thread {
     Bathroom bathroom;
     Person person;
 
     public PersonBathroom(Bathroom bathroom) {
+        System.out.println("PersonBathroom");
         this.bathroom = bathroom;
         this.person = new Person();
     }
@@ -17,13 +18,30 @@ public class PersonBathroom {
         tryEnter();
         try {
             Thread.sleep(getRandomDelay(1000, 4000));
-            bathroom.getPeople().remove(person);
+
+            removePerson();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    private void removePerson() {
+        bathroom.getPeople().remove(person);
+
+        if(bathroom.getPeople().size() == 0) {
+            System.out.println("SEX: " + this.bathroom.getSex());
+            bathroom.setSex(null);
+        }
+    }
+
+    @Override
+    public void run() {
+        this.use();
+    }
+
     private synchronized void tryEnter() {
+        System.out.println("tryEnter >   " + this.person.toString());
+        System.out.println("QTD: " + bathroom.getPeople().size() );
         waitIfExceededMaximumCapacity();
         waitIfSexNotMatch();
 
@@ -31,6 +49,7 @@ public class PersonBathroom {
             bathroom.setSex(person.getSex());
         }
         bathroom.setPerson(person);
+        System.out.println("entrou   >   " + this.person.toString());
         notify();
     }
 

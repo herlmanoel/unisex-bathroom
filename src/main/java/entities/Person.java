@@ -1,18 +1,29 @@
 package entities;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Person {
     private int id;
+    private LocalDateTime createdDate;
     private Sex sex;
 
     public Person() {
         sex = Sex.randomSex();
+        this.id = id;
+        this.createdDate = LocalDateTime.now();
     }
 
     public Person(int id, Sex sex) {
         this.id = id;
         this.sex = sex;
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public String getCreatedDate() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return dtf.format(createdDate);
     }
 
     public int getId() {
@@ -44,5 +55,13 @@ public class Person {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), sex);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                ", createdDate=" + getCreatedDate() +
+                ", sex=" + sex +
+                '}';
     }
 }
