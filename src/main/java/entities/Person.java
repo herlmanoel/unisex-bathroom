@@ -5,19 +5,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Person {
+    private static int count = 0;
     private int id;
     private LocalDateTime createdDate;
     private Sex sex;
 
     public Person() {
         sex = Sex.randomSex();
-        this.id = id;
+        this.id = ++count;
         this.createdDate = LocalDateTime.now();
     }
 
-    public Person(int id, Sex sex) {
-        this.id = id;
+    public Person(Sex sex) {
         this.sex = sex;
+        this.id = ++count;
         this.createdDate = LocalDateTime.now();
     }
 
@@ -60,7 +61,8 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                ", createdDate=" + getCreatedDate() +
+                "id=" + id +
+                // ", createdDate=" + getCreatedDate() +
                 ", sex=" + sex +
                 '}';
     }

@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
-    static private final int interval = 2000;
+    static private final int interval = 1000;
 
     public static void main(String[] args) {
         Bathroom bathroom = new Bathroom();
@@ -14,12 +14,8 @@ public class Main {
         ExecutorService executor = Executors.newCachedThreadPool();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                System.out.println("run");
-//                personBathroom.use();
-                for (int i = 0; i < 4; i++) {
-                    PersonBathroom personBathroom = new PersonBathroom(bathroom);
-                    executor.execute(personBathroom);
-                }
+                PersonBathroom personBathroom = new PersonBathroom(bathroom);
+                executor.execute(personBathroom);
             }
         }, 200, interval);
 

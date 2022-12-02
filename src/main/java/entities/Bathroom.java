@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Bathroom {
     private List<Person> people;
     private final int maximumCapacity = 5;
-    private Sex sex;
 
     public Bathroom() {
         people = new ArrayList<Person>();
@@ -16,20 +15,43 @@ public class Bathroom {
         return people;
     }
 
-    public void setPerson(Person person) {
-        this.people.add(person);
+    public synchronized void setPerson(Person person) {
+        try {
+            while (true) {
+                if (this.isExceededMaximumCapacity()) {
+                    System.out.println("Banheiro está cheio");
+                } else if (!this.isSexEquals(person.getSex())) {
+                    System.out.println("Banheiro está ocupado pelo sexo oposto");
+                } else {
+                    break;
+                }
+                System.out.println(people);
+                System.out.println("fila     >   " + person.toString());
+                wait();
+                System.out.println("acordou  >   " + person.toString());
+            }
+            this.people.add(person);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void removePerson(Person person) {
+        this.people.remove(person);
+        notify();
     }
 
     public boolean isSexEquals(Sex sex) {
-        return this.getPeople().size() == 0 || this.sex == sex;
+        Sex current_sex = this.getSex();
+        return current_sex == sex || current_sex == null;
     }
 
     public boolean isExceededMaximumCapacity() {
-        return this.getPeople().size() > maximumCapacity;
+        return this.people.size() > maximumCapacity;
     }
 
     public boolean bathroomIsEmpty() {
-        return getPeople().size() == 0;
+        return people.size() == 0;
     }
 
     public int getMaximumCapacity() {
@@ -41,10 +63,9 @@ public class Bathroom {
     }
 
     public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
+        if (this.people.size() > 0) {
+            return this.people.get(0).getSex();
+        }
+        return null;
     }
 }
