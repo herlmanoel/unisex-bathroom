@@ -18,6 +18,7 @@ public class Bathroom {
     public synchronized void setPerson(Person person) {
         try {
             while (true) {
+                System.out.println("dentro do banheiro: " + getPeople());
                 if (this.isExceededMaximumCapacity()) {
                     System.out.println("Banheiro está cheio");
                 } else if (!this.isSexEquals(person.getSex())) {
@@ -25,13 +26,13 @@ public class Bathroom {
                 } else {
                     break;
                 }
-                System.out.println(people);
                 System.out.println("fila     >   " + person.toString());
                 wait();
                 System.out.println("acordou  >   " + person.toString());
             }
 
             this.people.add(person);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -39,9 +40,6 @@ public class Bathroom {
 
     public synchronized void removePerson(Person person) {
         this.people.remove(person);
-        if(this.people.size() == 0 ) {
-            System.out.println("BANHEIRO VAZIO!!!!");
-        }
         notifyAll();
     }
 
@@ -53,7 +51,6 @@ public class Bathroom {
     public boolean isExceededMaximumCapacity() {
         return this.people.size() > maximumCapacity;
     }
-
 
     public Sex getSex() {
         if (this.people.size() > 0) {

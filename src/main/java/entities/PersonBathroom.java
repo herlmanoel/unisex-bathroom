@@ -13,34 +13,27 @@ public class PersonBathroom extends Thread {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public void use() {
-        tryEnter();
-        try {
-            Thread.sleep(getRandomDelay(1000, 4000));
-
-            removePerson();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private synchronized void enterBathroom() {
+        System.out.println("tryenter >   " + person);
+        bathroom.setPerson(person);
+        System.out.println("entrou   >   " + person.toString());
     }
 
-    private void removePerson() {
-        bathroom.removePerson(this.person);
-        System.out.println("saiu     >   " + this.person.toString());
+    private synchronized void exitBathroom() {
+        bathroom.removePerson(person);
+        System.out.println("saiu     >   " + person);
         System.out.println("dentro do banheiro: " + bathroom.getPeople());
     }
 
     @Override
     public void run() {
-        this.use();
-    }
-
-    private void tryEnter() {
-
-        System.out.println("tryEnter >   " + this.person.toString());
-        System.out.println("dentro do banheiro: " + bathroom.getPeople());
-        bathroom.setPerson(person);
-        System.out.println("entrou   >   " + this.person.toString());
-
+        enterBathroom();
+        try {
+            Thread.sleep(getRandomDelay(1000, 4000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            exitBathroom();
+        }
     }
 }
