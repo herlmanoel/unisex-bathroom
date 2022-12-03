@@ -27,7 +27,7 @@ public class PersonBathroom extends Thread {
     private void removePerson() {
         bathroom.removePerson(this.person);
         System.out.println("saiu     >   " + this.person.toString());
-        System.out.println("restante: " + bathroom.getPeople());
+        System.out.println("dentro do banheiro: " + bathroom.getPeople());
     }
 
     @Override
@@ -36,36 +36,11 @@ public class PersonBathroom extends Thread {
     }
 
     private void tryEnter() {
-        System.out.println("tryEnter >   " + this.person.toString());
-        // waitIfExceededMaximumCapacity();
-        // waitIfSexNotMatch();
 
+        System.out.println("tryEnter >   " + this.person.toString());
+        System.out.println("dentro do banheiro: " + bathroom.getPeople());
         bathroom.setPerson(person);
         System.out.println("entrou   >   " + this.person.toString());
-        // notify();
+
     }
-
-    // private void waitIfExceededMaximumCapacity() {
-    // while (bathroom.isExceededMaximumCapacity()) {
-    // System.out.println("Bathroom is full.");
-    // try {
-    // wait();
-    // System.out.println("acordou > " + this.person.toString());
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
-
-    // private void waitIfSexNotMatch() {
-    // while (!bathroom.isSexEquals(person.getSex())) {
-    // System.out.println("Bathroom is sex opposite.");
-    // try {
-    // wait();
-    // System.out.println("acordou > " + this.person.toString());
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
 }

@@ -8,7 +8,7 @@ public class Bathroom {
     private final int maximumCapacity = 5;
 
     public Bathroom() {
-        people = new ArrayList<Person>();
+        people = new ArrayList<>();
     }
 
     public List<Person> getPeople() {
@@ -30,6 +30,7 @@ public class Bathroom {
                 wait();
                 System.out.println("acordou  >   " + person.toString());
             }
+
             this.people.add(person);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -38,7 +39,10 @@ public class Bathroom {
 
     public synchronized void removePerson(Person person) {
         this.people.remove(person);
-        notify();
+        if(this.people.size() == 0 ) {
+            System.out.println("BANHEIRO VAZIO!!!!");
+        }
+        notifyAll();
     }
 
     public boolean isSexEquals(Sex sex) {
@@ -50,17 +54,6 @@ public class Bathroom {
         return this.people.size() > maximumCapacity;
     }
 
-    public boolean bathroomIsEmpty() {
-        return people.size() == 0;
-    }
-
-    public int getMaximumCapacity() {
-        return maximumCapacity;
-    }
-
-    public void setPeople(List<Person> people) {
-        this.people = people;
-    }
 
     public Sex getSex() {
         if (this.people.size() > 0) {

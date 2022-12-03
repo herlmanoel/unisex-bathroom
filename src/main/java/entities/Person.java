@@ -1,46 +1,25 @@
 package entities;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Person {
     private static int count = 0;
     private int id;
-    private LocalDateTime createdDate;
+
     private Sex sex;
 
     public Person() {
         sex = Sex.randomSex();
         this.id = ++count;
-        this.createdDate = LocalDateTime.now();
     }
 
-    public Person(Sex sex) {
-        this.sex = sex;
-        this.id = ++count;
-        this.createdDate = LocalDateTime.now();
-    }
-
-    public String getCreatedDate() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return dtf.format(createdDate);
-    }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Sex getSex() {
         return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
     }
 
     @Override
